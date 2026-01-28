@@ -177,7 +177,7 @@ Le script doit automatiser ces étapes dans l'ordre :
 
 **Outil** : [vue-tsc](https://github.com/vuejs/language-tools/tree/master/packages/tsc)
 
-**Commande** : `vue-tsc --noEmit` ou `nuxt typecheck`
+**Commande** : `pnpm exec vue-tsc --noEmit` ou `pnpm exec nuxt typecheck`
 
 **Test** :
 1. Vérifier qu'aucune erreur n'est remontée
@@ -237,7 +237,7 @@ Le script doit automatiser ces étapes dans l'ordre :
 
 **Outil** : [Vitest](https://vitest.dev/) (framework de tests moderne)
 
-**Commande** : `vitest run` (exécution unique) ou `vitest` (mode watch)
+**Commande** : `pnpm exec vitest run` (exécution unique) ou `pnpm exec vitest` (mode watch)
 
 **Exemple de test** :
 ```typescript
