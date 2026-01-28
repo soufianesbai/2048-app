@@ -168,7 +168,8 @@ Le script doit automatiser ces étapes dans l'ordre :
 **Apprentissages** :
 - pnpm utilise un cache global pour éviter de re-télécharger les packages
 - Si vous supprimez `node_modules` et réinstallez, c'est beaucoup plus rapide la 2ème fois
-- pnpm peut exécuter des binaires locaux : `pnpm nomdupackage`
+- pnpm peut exécuter des scripts npm : `pnpm nomdupackage` (si défini dans package.json)
+- Pour exécuter des binaires locaux : `pnpm exec nomdupackage`
 
 ### 2. ✅ Vérification du typage statique
 
@@ -195,7 +196,7 @@ Le script doit automatiser ces étapes dans l'ordre :
 
 **Outil** : [ESLint](https://eslint.org/)
 
-**Commande** : `eslint .` (analyser tous les fichiers)
+**Commande** : Utiliser le script défini dans package.json (ex: `pnpm lint`) ou `pnpm exec eslint .`
 
 **Test** :
 1. Vérifier qu'aucune erreur n'est remontée
@@ -217,14 +218,13 @@ Le script doit automatiser ces étapes dans l'ordre :
 **Outil** : [Vite](https://vitejs.dev/) (intégré à Nuxt)
 
 **Commandes** :
-- Build : `nuxt build` ou `vite build`
-- Preview : `nuxt preview` ou `vite preview`
+- Build : `pnpm build` (utilise `nuxt build` en interne)
+- Preview : `pnpm preview` (utilise `nuxt preview` en interne)
 
 **Étapes** :
-1. Construire le package → créé dans `.output/` (Nuxt) ou `dist/` (Vite)
-2. Optionnel : Changer le répertoire de sortie avec `--outDir publish`
-3. Ajouter le répertoire de build à `.gitignore`
-4. Tester le build avec `nuxt preview`
+1. Construire le package → créé dans `.output/` pour Nuxt
+2. Le répertoire `.output/` est déjà dans `.gitignore` par défaut
+3. Tester le build avec `pnpm preview`
 
 **Avantages de Vite** :
 - Build ultra-rapide
@@ -284,11 +284,11 @@ pnpm install
 
 # 2. Vérification du typage
 echo "✅ Vérification TypeScript..."
-pnpm nuxt typecheck
+pnpm exec nuxt typecheck
 
 # 3. Analyse statique
 echo "🔍 Analyse ESLint..."
-pnpm eslint .
+pnpm exec eslint .
 
 # 4. Build
 echo "📦 Construction du package..."
@@ -296,7 +296,7 @@ pnpm build
 
 # 5. Tests
 echo "🧪 Exécution des tests..."
-pnpm vitest run
+pnpm exec vitest run
 
 echo "✨ Pipeline CI terminé avec succès!"
 ```
@@ -342,10 +342,12 @@ pnpm update
 pnpm audit --json > reports/vulnerable-dependencies.json
 ```
 
-### 4. Test avec lodash vulnérable
-- Installer `lodash@4.17.20` (version avec vulnérabilités connues)
-- Relancer l'audit
+### 4. Test de détection de vulnérabilités
+- Pour tester le système de détection, vous pouvez temporairement installer une ancienne version d'une dépendance
+- Exemple : `lodash@4.17.20` (cette version a des vulnérabilités connues)
+- Relancer l'audit pour voir les alertes
 - Utiliser `pnpm audit --fix` pour corriger automatiquement
+- **Important** : N'oubliez pas de supprimer la dépendance vulnérable après le test
 
 ## 💡 Conseils pour réussir
 
