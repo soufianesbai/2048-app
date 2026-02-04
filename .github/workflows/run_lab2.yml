@@ -3,16 +3,18 @@ name: Pipeline for Lab 2
 on:
     push:
         branches:
-        - lab3  
+        - lab3
 
 jobs:
     run-lab2:
         runs-on: ubuntu-latest
 
         steps:
+        - uses: actions/checkout@v4
+        
         - name: Run Lab 2 Script
           run: |
             echo "Starting Lab 2 Pipeline..."
-            chmod +x ./deliverables/lab2/lab2.sh
-            ./deliverables/lab2/lab2.sh
+            chmod +x ./deliverables/lab02/lab2.sh
+            ./deliverables/lab02/lab2.sh
             echo "Lab 2 Pipeline Completed."
