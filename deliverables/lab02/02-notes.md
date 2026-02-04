@@ -45,7 +45,7 @@ Automatiser la vérification de la qualité du code et la construction du packag
 - Exécution complète du script : **toutes les étapes passent**
 - Validation de l'ordre des commandes
 
-## 🚀 Pour Aller Plus Loin (Bonus)
+## Pour Aller Plus Loin (Bonus)
 
 ### Analyse des Dépendances
 - Création du dossier `reports/`
