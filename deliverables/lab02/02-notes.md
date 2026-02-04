@@ -45,6 +45,35 @@ Automatiser la vérification de la qualité du code et la construction du packag
 - Exécution complète du script : **toutes les étapes passent**
 - Validation de l'ordre des commandes
 
+## 🚀 Pour Aller Plus Loin (Bonus)
+
+### Analyse des Dépendances
+- Création du dossier `reports/`
+- Identification des packages obsolètes avec `pnpm outdated --format json`
+- Export dans `reports/outdated-dependencies.json`
+- Résultat : 4 packages à mettre à jour (@nuxt/ui, nuxt, vue-router, @nuxt/fonts)
+
+### Mise à Jour des Dépendances
+- Exécution de `pnpm update --latest`
+- Mise à jour de tous les packages vers leurs dernières versions
+
+### Audit de Sécurité
+- Analyse des vulnérabilités avec `pnpm audit --json`
+- Export dans `reports/vulnerable-dependencies.json`
+- Résultat initial : 0 vulnérabilité
+
+### Test avec Package Vulnérable
+- Installation de lodash@4.17.20 (version vulnérable)
+- Relance de l'audit : **3 vulnérabilités détectées** (1 high, 2 moderate)
+  - Command Injection (high)
+  - ReDoS (moderate)
+  - Prototype Pollution (moderate)
+
+### Correction des Vulnérabilités
+- Commande : `pnpm audit --fix` ou `pnpm update lodash --latest`
+- Mise à jour vers lodash@4.17.23 (version corrigée)
+- Vérification : plus aucune vulnérabilité
+
 ## Ce Que J'ai Appris
 
 ### Intégration Continue (CI)
@@ -84,3 +113,10 @@ Automatiser la vérification de la qualité du code et la construction du packag
 - Glob pattern `**/*.vue` = tous les fichiers à n'importe quelle profondeur
 - Auto-imports Nuxt vs imports explicites pour les tests
 - Séparer config des outils dans des fichiers dédiés
+
+### Audit et Sécurité des Dépendances
+- `pnpm outdated` : identifier les packages à mettre à jour
+- `pnpm audit` : détecter les vulnérabilités de sécurité
+- `pnpm audit --fix` : corriger automatiquement les vulnérabilités
+- Importance de maintenir les dépendances à jour pour la sécurité
+- Export JSON pour intégration dans les rapports CI/CD
