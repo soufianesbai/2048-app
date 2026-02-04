@@ -1,10 +1,24 @@
 {
+  "@vitejs/plugin-vue": {
+    "current": "6.0.3",
+    "latest": "6.0.4",
+    "wanted": "6.0.3",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
+  },
   "@nuxt/ui": {
     "current": "4.3.0",
     "latest": "4.4.0",
     "wanted": "4.3.0",
     "isDeprecated": false,
     "dependencyType": "dependencies"
+  },
+  "happy-dom": {
+    "current": "20.4.0",
+    "latest": "20.5.0",
+    "wanted": "20.4.0",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
   },
   "nuxt": {
     "current": "4.2.2",

@@ -3,7 +3,7 @@ name: Pipeline for Lab 2
 on:
     push:
         branches:
-        - lab3
+        - lab3  
 
 jobs:
     run-lab2:
