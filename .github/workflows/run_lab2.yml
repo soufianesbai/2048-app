@@ -26,4 +26,3 @@ jobs:
             echo "Starting Lab 2 Pipeline..."
             chmod +x ./deliverables/lab02/lab2.sh
             ./deliverables/lab02/lab2.sh
-            echo "Lab 2 Pipeline Completed."
