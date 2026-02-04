@@ -12,6 +12,15 @@ jobs:
         steps:
         - uses: actions/checkout@v4
         
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+            cache: pnpm
+
+        - name: Enable pnpm
+          run: corepack enable
+        
         - name: Run Lab 2 Script
           run: |
             echo "Starting Lab 2 Pipeline..."
