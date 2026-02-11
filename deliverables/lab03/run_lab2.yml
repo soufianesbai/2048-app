@@ -1,0 +1,25 @@
+name: Pipeline for Lab 2
+
+on:
+  push:
+    branches:
+      - lab3
+
+jobs:
+  run-lab2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.27.0"
+      - name: Giving rights to execute
+        run: chmod +x deliverables/lab02/lab2.sh
+      - name: Running the pipeline
+        run: ./deliverables/lab02/lab2.sh
+
