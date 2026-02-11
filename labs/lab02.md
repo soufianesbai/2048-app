@@ -16,7 +16,7 @@ Mise en place d'un script d'integration continue qui automatise l'exécution des
 ## Initialisation du script
 
 1. Choisir un langage de script : bash ou [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell) par exemple (installer si nécessaire)
-2. A la racine du répertoire du projet, créer un dossier `deliverables/lab02` avec un fichier qui contiendra un script à l'intérieur
+2. A la racine du répertoire du projet, créer un dossier `pipelines` avec un fichier qui contiendra un script à l'intérieur
 
 ## Récupération des dépendances
 
