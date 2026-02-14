@@ -1,3 +1,5 @@
+import { useState } from '#app'
+
 type Grid = [number[], number[], number[], number[]]
 
 export const useGameState = () => {
@@ -64,7 +66,7 @@ export const useGameState = () => {
 
   // Save best score to localStorage
   function saveBestScore() {
-    if (import.meta.client) {
+    if (process.client) {
       localStorage.setItem('2048-best-score', bestScore.value.toString())
     }
   }

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useGameState } from '~/composables/useGameState'
+import { useGameControls } from '~/composables/useGameControls'
+
 const { grid } = useGameState()
 const { handleTouchStart, handleTouchEnd } = useGameControls()
 </script>

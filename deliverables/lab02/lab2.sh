@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 ## Partie Pour aller plus loin ##
 echo "Identification des dépendances obsolètes"
