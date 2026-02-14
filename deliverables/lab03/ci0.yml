@@ -4,54 +4,71 @@ on:
   push:
     branches:
       - main
-      - lab3
-      - feature/*
+      - "feature/**"
   schedule:
     - cron: "0 8 * * *"
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  quality:
+  typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: "10.27.0"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
 
-      - name: Typecheck
-        run: pnpm run typecheck
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.27.0"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
 
-      - name: Lint
-        run: pnpm run lint
-
-      - name: Test
-        run: pnpm run test
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "10.27.0"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: "10.27.0"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm run build
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
 
       - name: Verify build output
         run: |
@@ -64,8 +81,7 @@ jobs:
           sleep 5
           curl -f http://localhost:3000/
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: nuxt-build
           path: .output
