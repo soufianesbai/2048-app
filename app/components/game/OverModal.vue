@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useGameState } from '~/composables/useGameState'
+
 const { isGameOver, isWon, resetGame } = useGameState()
 
 const title = computed(() => isWon.value ? '🎉 You Win!' : '😢 Game Over')

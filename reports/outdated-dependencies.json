@@ -1,0 +1,44 @@
+{
+  "@vitejs/plugin-vue": {
+    "current": "6.0.3",
+    "latest": "6.0.4",
+    "wanted": "6.0.3",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
+  },
+  "@nuxt/ui": {
+    "current": "4.3.0",
+    "latest": "4.4.0",
+    "wanted": "4.3.0",
+    "isDeprecated": false,
+    "dependencyType": "dependencies"
+  },
+  "happy-dom": {
+    "current": "20.4.0",
+    "latest": "20.5.0",
+    "wanted": "20.4.0",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
+  },
+  "nuxt": {
+    "current": "4.2.2",
+    "latest": "4.3.0",
+    "wanted": "4.2.2",
+    "isDeprecated": false,
+    "dependencyType": "dependencies"
+  },
+  "vue-router": {
+    "current": "4.6.4",
+    "latest": "5.0.2",
+    "wanted": "4.6.4",
+    "isDeprecated": false,
+    "dependencyType": "dependencies"
+  },
+  "@nuxt/fonts": {
+    "current": "0.12.1",
+    "latest": "0.13.0",
+    "wanted": "0.12.1",
+    "isDeprecated": false,
+    "dependencyType": "dependencies"
+  }
+}

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGameState } from '~/composables/useGameState'
+
 const { score, bestScore } = useGameState()
 </script>
 
