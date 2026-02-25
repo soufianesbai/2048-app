@@ -1,19 +1,28 @@
-name: Hello World
+name: Lab 4 CI
 
 on:
+  push:
+    branches:
+      - lab4
+    paths-ignore:
+      - "docs/**"
+  pull_request:
+    branches:
+      - lab4
+    paths-ignore:
+      - "docs/**"
   workflow_dispatch:
 
 jobs:
-  hello:
+  trigger-check:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Say Hello
-        run: echo "Hello pipelines' world !"
-      
-      - name: Display runner info
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show trigger context
         run: |
-          echo "Running on: $(uname -a)"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Triggered by: ${{ github.event_name }}"
-          echo "Repository: ${{ github.repository }}"
+          echo "event=${{ github.event_name }}"
+          echo "ref=${{ github.ref }}"
+
+    
