@@ -29,6 +29,7 @@
     "@vitejs/plugin-vue": "^6.0.3",
     "@vitest/ui": "^4.0.18",
     "@vue/test-utils": "^2.4.6",
+    "eslint": "^9.39.2",
     "happy-dom": "^20.4.0",
     "unplugin-auto-import": "^21.0.0",
     "vitest": "^4.0.18",
