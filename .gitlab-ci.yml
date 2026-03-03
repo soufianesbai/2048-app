@@ -1,0 +1,84 @@
+image: node:20.19.0
+
+stages:
+  - build
+  - quality
+  - deploy
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "lab4"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "lab4"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - when: never
+
+variables:
+  NODE_VERSION: "20.19.0"
+  PNPM_VERSION: "10.28.2"
+  PNPM_STORE_DIR: ".pnpm-store"
+  RUN_CHECKS: "true"
+  ENVIRONMENT: "QA"
+
+default:
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store/
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@${PNPM_VERSION} --activate
+    - pnpm config set store-dir ${PNPM_STORE_DIR}
+    - pnpm install --frozen-lockfile
+
+build:
+  stage: build
+  script:
+    - pnpm run build
+  artifacts:
+    name: app-build-$CI_COMMIT_SHORT_SHA
+    paths:
+      - .output/
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "lab4"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "lab4"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+lint:
+  stage: quality
+  needs: [build]
+  script:
+    - pnpm run lint
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "lab4"'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $RUN_CHECKS == "true"'
+
+typecheck:
+  stage: quality
+  needs: [build]
+  script:
+    - pnpm run typecheck
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "lab4"'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $RUN_CHECKS == "true"'
+
+test:
+  stage: quality
+  needs: [build]
+  script:
+    - pnpm run test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "lab4"'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $RUN_CHECKS == "true"'
+
+deploy:
+  stage: deploy
+  needs: [build]
+  script:
+    - echo "Deploying to $ENVIRONMENT"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"'
