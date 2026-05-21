@@ -1,19 +1,23 @@
-$subscriptionId="******-***-****-****-******"
-$tenantId="******-***-****-****-******"
-$env="qa"
+$subscriptionId="<subscription-id>"
+$tenantId="<tenant-id>"
 
 az login --tenant $tenantId
 az account set -s $subscriptionId
-# az account show
 
-# Create the resource group
-$rgName="rg-vue2048-$env"
-az group create -n $rgName -l "France Central" --tags Class=EI8IT213
+# Créer les ressources pour QA et Production
+foreach ($env in @("qa", "prod")) {
+    $rgName = "rg-vue2048-$env"
+    $swaName = "stapp-vue2048-$env"
 
-# Create the Azure Static Web App
-$swaName="stapp-vue2048-$env"
-az staticwebapp create -n $swaName -g $rgName
+    Write-Host "=== Création de l'environnement $env ==="
 
-# Get the token for the ASWA
-az staticwebapp secrets list -n $swaName --query "properties.apiKey"
-az staticwebapp list --query "[].name"
+    # Groupe de ressources
+    az group create -n $rgName -l "France Central" --tags Class=EI8IT213
+
+    # Azure Static Web App (plan Free)
+    az staticwebapp create -n $swaName -g $rgName --sku Free
+
+    # Récupération du deployment token (à ajouter dans les secrets GitHub/GitLab)
+    Write-Host "Deployment token pour $env :"
+    az staticwebapp secrets list -n $swaName -g $rgName --query "properties.apiKey" -o tsv
+}
