@@ -1,31 +1,40 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure_native from "@pulumi/azure-native";
 
-const clientConfig = azure_native.authorization.getClientConfigOutput();
-const subscriptionId = clientConfig.apply(config => config.subscriptionId);
-const id = pulumi.interpolate`/subscriptions/${subscriptionId}/resourceGroups/rg-lab7`;
+const config = new pulumi.Config();
+const pricing = config.require("staticWebAppPricing");
+const stackName = pulumi.getStack();
 
-const pricing = new pulumi.Config().require("staticWebAppPricing");
-
-const resourceGroup = azure_native.resources.ResourceGroup.get("rg-lab7", id);
-const environment = pulumi.getStack();
+const resourceGroup = new azure_native.resources.ResourceGroup("resourceGroup", {
+    resourceGroupName: `rg-vue2048-${stackName}`,
+    location: "westeurope",
+    tags: {
+        Class: "EI8IT213",
+    },
+});
 
 const staticSite = new azure_native.web.StaticSite("staticSite", {
-    branch: "master",
-    name: pulumi.interpolate`stapp-2048-app-${environment}`,
-    repositoryUrl: "https://github.com/placeholder/placeholder",
-    location: "westeurope",
+    name: pulumi.interpolate`stapp-vue2048-${stackName}`,
     resourceGroupName: resourceGroup.name,
+    location: resourceGroup.location,
+    repositoryUrl: "",
+    branch: "main",
     sku: {
         name: pricing,
         tier: pricing,
     },
+    tags: {
+        Class: "EI8IT213",
+    },
 });
 
-const listStaticSiteSecretsOutput = azure_native.web.listStaticSiteSecretsOutput({
+const secrets = azure_native.web.listStaticSiteSecretsOutput({
     resourceGroupName: resourceGroup.name,
     name: staticSite.name,
 });
 
 export const resourceGroupName = resourceGroup.name;
-export const deploymentToken = pulumi.secret(listStaticSiteSecretsOutput.apply(secrets => secrets?.properties?.apiKey));
+export const hostname = staticSite.defaultHostname;
+export const deploymentToken = pulumi.secret(
+    secrets.apply(s => s?.properties?.apiKey)
+);
